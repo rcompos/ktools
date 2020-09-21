@@ -28,21 +28,18 @@ while IFS= read -r line; do
   data_match=`echo $line | perl -ne 'print if /^data:/'`
   if [ "$data_match" != "" ]; then
     data="true"
-    echo "$line"
+    echo "stringData:"
     continue
   fi
-  if [ "$data" != "" ]; then 
-    # in data section
-    #echo "b> "
+  if [ "$data" != "" ]; then # in data section
     data_line=`echo "$line" | perl -ne 'print if /^\s+\S/'`
     if [ "$data_line" != "" ]; then
       # still in data section
       key=`echo "$line" | cut -d: -f 1`
       value=`echo "$line" | cut -d: -f 2`
-      echo -n "$key: "; echo "$value" | perl -pe 's/^\s+//' | base64 -d; echo
-    else
-      #echo "c> "
-      # out of data section
+      plaintext=`echo "$value" | perl -pe 's/^\s+//' | base64 -d`
+      echo  "$key: \"$plaintext\""
+    else # out of data section
       data=""
       echo "$line"
     fi
