@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 # Decode kubernetes secrets yaml
 
-SECRETS_FILE=${SECRETS_FILE}
 DBUG=${DBUG:-""}
 
 if [[ $# -gt 1 ]]; then
   echo "Decode kubernetes secrets yaml from file or stdin"
   echo "Usage:  $0 [secrets_file]"
-  echo "  Supply optional file name for Kubernetes secrets yaml as" 
-  echo "  command-line argument or as environmental variable SECRETS_FILE"
+  echo "  Supply optional file name for Kubernetes secrets"
+  echo "  yaml as command-line argument" 
   echo 
   echo "Example:  kubectl get secret mysecret -o yaml | $0"
   echo "Example:  cat secrets_file | $0"
