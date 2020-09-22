@@ -17,7 +17,6 @@ Get repo containing script decode-secrets.
 
 ```
 git clone https://github.com/rcompos/ktools
-cd ktools
 ```
 
 ### Copy script to /usr/local/bin
@@ -26,7 +25,7 @@ Copy to /usr/local/bin or somewhere in your executable path (i.e. make sure it's
 Now you can run as `decode-secrets` instead of `./decode-secrets`.
 
 ```
-cp decode-secrets /usr/local/bin
+cp ktools/decode-secrets /usr/local/bin
 decode-secrets help me
 ```
 
@@ -35,6 +34,7 @@ decode-secrets help me
 Run kubectl to create a test secret.
 
 ```
+cd ktools
 kubectl apply -f dummy-secret.yaml
 ```
 
@@ -66,7 +66,7 @@ type: Opaque
 List Kubernetes secret and decode in place using decode-secrets. Now the data values are quoted plain text and type stringData.
 
 ```
-kubectl get secret dummy-secret -o yaml | ./decode-secrets
+kubectl get secret dummy-secret -o yaml | decode-secrets
 ```
 
 ```
@@ -89,7 +89,7 @@ type: Opaque
 Save decoded secret to file for editing. Then apply to cluster.
 
 ```
-kubectl get secret dummy-secret -o yaml | ./decode-secrets > secrets_file.yaml
+kubectl get secret dummy-secret -o yaml | decode-secrets > secrets_file.yaml
 
 Edit secrets_file.yaml to change data values
 
@@ -101,7 +101,7 @@ kubectl apply -f secrets_file.yaml
 Pass a filename argument.
 
 ```
-./decode-secrets dummy-secret.yaml
+decode-secrets dummy-secret.yaml
 ```
 
 ### Clean up
@@ -120,7 +120,7 @@ Usage:  /usr/local/bin/decode-secrets [secrets_file]
   Supply optional file name for Kubernetes secrets
   yaml as command-line argument
 
-Example:  kubectl get secret dummy-secret -o yaml | /usr/local/bin/decode-secrets
-Example:  cat dummy-secret.yaml | /usr/local/bin/decode-secrets
-Example:  /usr/local/bin/decode-secrets < `echo dummy-secret.yaml`
+Example:  kubectl get secret dummy-secret -o yaml | decode-secrets
+Example:  cat dummy-secret.yaml | decode-secrets
+Example:  decode-secrets < `echo dummy-secret.yaml`
 ```
