@@ -26,7 +26,7 @@ Copy to /usr/local/bin or somewhere in your executable path (i.e. make sure it's
 Now you can run as `decode-secrets` instead of `./decode-secrets`.
 
 ```
-cp decode-secrets /usr/local/bin/decode-secrets
+cp decode-secrets /usr/local/bin
 decode-secrets help me
 ```
 
