@@ -7,12 +7,27 @@ There are a variety of ways to decode Kubernetes secrets, but I was interested i
 
 I wanted a way to decode Kubernetes secrets in-place. Other approaches I googled resulted in incomplete output (i.e. just the data part). So I wrote a bash script that can accept secrets on standard input or a filename.
 
+### Requirements
+
+Your system must have perl installed. MacOS and most Linux have perl by default.
+
 ### Clone
 
 Get repo containing script decode-secrets.sh.
 
 ```
 git clone https://github.com/rcompos/ktools
+cd ktools
+```
+
+### Copy script to /usr/local/bin
+
+Copy to /usr/local/bin or somewhere in your executable path (i.e. make sure it's is in your PATH environmental variable).
+Now you can run as `decode-secrets` instead of `./decode-secrets.sh`.
+
+```
+cp decode-secrets.sh /usr/local/bin/decode-secrets
+decode-secrets help me
 ```
 
 ### Create secret
