@@ -13,7 +13,7 @@ Your system must have perl installed. MacOS and most Linux have perl by default.
 
 ### Clone
 
-Get repo containing script decode-secrets.sh.
+Get repo containing script decode-secrets.
 
 ```
 git clone https://github.com/rcompos/ktools
@@ -23,10 +23,10 @@ cd ktools
 ### Copy script to /usr/local/bin
 
 Copy to /usr/local/bin or somewhere in your executable path (i.e. make sure it's is in your PATH environmental variable).
-Now you can run as `decode-secrets` instead of `./decode-secrets.sh`.
+Now you can run as `decode-secrets` instead of `./decode-secrets`.
 
 ```
-cp decode-secrets.sh /usr/local/bin/decode-secrets
+cp decode-secrets /usr/local/bin/decode-secrets
 decode-secrets help me
 ```
 
@@ -63,10 +63,10 @@ type: Opaque
 
 ### Decode in-place
 
-List Kubernetes secret and decode in place using decode-secrets.sh. Now the data values are quoted plain text and type stringData.
+List Kubernetes secret and decode in place using decode-secrets. Now the data values are quoted plain text and type stringData.
 
 ```
-kubectl get secret dummy-secret -o yaml | ./decode-secrets.sh
+kubectl get secret dummy-secret -o yaml | ./decode-secrets
 ```
 
 ```
@@ -89,7 +89,7 @@ type: Opaque
 Save decoded secret to file for editing. Then apply to cluster.
 
 ```
-kubectl get secret dummy-secret -o yaml | ./decode-secrets.sh > secrets_file.yaml
+kubectl get secret dummy-secret -o yaml | ./decode-secrets > secrets_file.yaml
 
 Edit secrets_file.yaml to change data values
 
@@ -101,7 +101,7 @@ kubectl apply -f secrets_file.yaml
 Pass a filename argument.
 
 ```
-./decode-secrets.sh dummy-secret.yaml
+./decode-secrets dummy-secret.yaml
 ```
 
 ### Clean up
@@ -115,14 +115,12 @@ kubectl delete secrets dummy-secret
 ### Script usage
 
 ```
-./decode-secrets.sh a a
 Decode kubernetes secrets yaml from file or stdin
-Output secret with stringData, which can be applied as-is or after modifications.
+Usage:  /usr/local/bin/decode-secrets [secrets_file]
+  Supply optional file name for Kubernetes secrets
+  yaml as command-line argument
 
-Usage:  ./decode-secrets.sh [secrets_file]
-  Supply optional file name for Kubernetes secrets yaml as command-line argument. 
-
-Example:  kubectl get secret dummy-secret -o yaml | ./decode-secrets.sh
-Example:  cat dummy-secret.yaml | ./decode-secrets.sh
-Example:  ./decode-secrets.sh < `echo dummy-secret.yaml`
+Example:  kubectl get secret dummy-secret -o yaml | /usr/local/bin/decode-secrets
+Example:  cat dummy-secret.yaml | /usr/local/bin/decode-secrets
+Example:  /usr/local/bin/decode-secrets < `echo dummy-secret.yaml`
 ```
