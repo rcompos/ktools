@@ -9,9 +9,9 @@ if [[ $# -gt 1 ]]; then
   echo "  Supply optional file name for Kubernetes secrets"
   echo "  yaml as command-line argument" 
   echo 
-  echo "Example:  kubectl get secret mysecret -o yaml | $0"
-  echo "Example:  cat secrets_file | $0"
-  echo "Example:  $0 < \`echo secrets_file\`"
+  echo "Example:  kubectl get secret dummy-secret -o yaml | $0"
+  echo "Example:  cat dummy-secret.yaml | $0"
+  echo "Example:  $0 < \`echo dummy-secret.yaml\`"
   exit 1
 fi
 
