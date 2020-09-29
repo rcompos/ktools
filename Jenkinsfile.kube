@@ -34,6 +34,9 @@ spec:
     stage('build') {
       steps {
         container('docker') {
+          sh """
+             apt -y update && apt -y install git
+          """
           script {
             env.GIT_REF=sh(returnStdout: true, script: "git rev-parse HEAD").trim()
           }
