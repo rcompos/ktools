@@ -20,6 +20,11 @@ spec:
     volumeMounts:
     - mountPath: /var/run/docker.sock
       name: docker-sock
+  - name: alpine 
+    image: alpine:latest
+    command:
+    - cat
+    tty: true
   volumes:
     - name: docker-sock
       hostPath:
@@ -31,15 +36,21 @@ spec:
     credentialsId = 'dockerhub-creds'
   }
   stages {
-    stage('build') {
+    stage( 'pre' ) {
       steps {
-        container('docker') {
+        container('alpine') {
           sh """
-             apt -y update && apt -y install git
+            apk update & apk add git
           """
           script {
             env.GIT_REF=sh(returnStdout: true, script: "git rev-parse HEAD").trim()
           }
+        }
+      }
+    }
+    stage('build') {
+      steps {
+        container('docker') {
           sh """
             echo "env.GIT_REF: ${env.GIT_REF}"
             echo "GIT_COMMIT: ${GIT_COMMIT}"
