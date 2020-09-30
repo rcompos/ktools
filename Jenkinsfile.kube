@@ -35,7 +35,7 @@ spec:
   environment {
     credentialsId = 'dockerhub-creds'
     SSH_KEY = credentials('bloom-vault-ssh-key')
-    NPMRC   = credentials('bloom-vault-npmrc)
+    NPMRC   = credentials('bloom-vault-npmrc')
     dockerImage = "hellobloom/bloom-vault"
   }
   stages {
