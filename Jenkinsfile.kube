@@ -34,6 +34,7 @@ spec:
   }
   environment {
     credentialsId = 'dockerhub-creds'
+    SSH_KEY="asdfa"
   }
   stages {
     stage( 'pre' ) {
@@ -42,8 +43,7 @@ spec:
           sh """
             echo "Installing dependencies"
             apk update && apk add git
-            printf "env.GIT_REF: "
-            git rev-parse HEAD
+            //git rev-parse HEAD
           """
         }
       }
@@ -60,11 +60,12 @@ spec:
           script {
             docker.withRegistry('', credentialsId) {
               sh """
-                echo docker build -f Dockerfile . --build-arg SSH_KEY="$SSH_KEY" --build-arg NPMRC='$NPMRC' -t hellobloom/bloom-vault:${env.GIT_REF}
-                echo docker tag hellobloom/bloom-vault:${env.GIT_REF} hellobloom/bloom-vault
-                docker pull hellobloom/bloom-vault:${env.GIT_REF}  
+                echo docker build -f Dockerfile . --build-arg SSH_KEY="$SSH_KEY" --build-arg NPMRC='$NPMRC' -t hellobloom/bloom-vault:${env.GIT_COMMIT}
+                echo docker tag hellobloom/bloom-vault:${env.GIT_COMMIT} hellobloom/bloom-vault
+                docker pull hellobloom/bloom-vault:${env.GIT_COMMIT}  
                 ls -AlF
               """
+            }
           }
         }
       }
@@ -75,7 +76,7 @@ spec:
           //script {
           //  docker.withRegistry('', credentialsId) {
           //    sh """
-          //      echo docker push hellobloom/bloom-vault:${env.GIT_REF}
+          //      echo docker push hellobloom/bloom-vault:${env.GIT_COMMIT}
           //      echo docker push hellobloom/bloom-vault
           //    """
           //  }
