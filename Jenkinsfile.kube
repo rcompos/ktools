@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'bloom-vault-agent-00001'
+      label 'bloom-vault-agent-00003'
       defaultContainer 'jnlp'
       yaml """
 apiVersion: v1
