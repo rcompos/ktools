@@ -41,7 +41,7 @@ spec:
         container('alpine') {
           sh """
             echo "Installing dependencies"
-            apk update & apk add git
+            apk update && apk add git
           """
         }
       }
