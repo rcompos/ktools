@@ -47,15 +47,6 @@ spec:
         }
       }
     }
-    stage('Pre') {
-      steps {
-        container('alpine') {
-          sh """
-            echo hello
-          """
-        }
-      }
-    }
     stage('build') {
       steps {
         container('docker') {
