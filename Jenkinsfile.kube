@@ -33,13 +33,16 @@ spec:
     }
   }
   environment {
-    DOCKER_IMAGE     = "hellobloom/bloom-vault"
-    DOCKERHUB_ID     = "dockerhub-creds"
-    SSH_KEY          = credentials("bloom-vault-ssh-key")
-    NPMRC            = credentials("bloom-vault-npmrc")
+    //DOCKER_ACCT      = "hellobloom"                // Dockerhub account
+    DOCKER_ACCT      = "rcompos"   // *** TEST REPO  ***
+    IMAGE_NAME       = "bloom-vault"               // Dockerhub image name
+    DOCKER_IMAGE     = "$DOCKER_ACCT/$IMAGE_NAME"  // Dockerhub image
+    DOCKERHUB_ID     = "dockerhub-creds"           // Dockerhub credentials
+    SSH_KEY          = credentials("bloom-vault-ssh-key")  // Bloom Vault ssh key
+    NPMRC            = credentials("bloom-vault-npmrc")    // NPM token
   }
   stages {
-    stage( 'pre' ) {
+    stage( 'Pre' ) {
       steps {
         container('alpine') {
           sh """
@@ -50,7 +53,7 @@ spec:
         }
       }
     }
-    stage('build') {
+    stage('Build') {
       steps {
         container('docker') {
           sh """
@@ -59,9 +62,8 @@ spec:
           script {
             docker.withRegistry('', DOCKERHUB_ID) {
               sh """
-                echo docker build -f Dockerfile . --build-arg SSH_KEY="$SSH_KEY" --build-arg NPMRC="$NPMRC" -t hellobloom/bloom-vault:"$GIT_COMMIT"
-                echo docker tag hellobloom/bloom-vault:"$GIT_COMMIT" hellobloom/bloom-vault
-                echo docker tag "$DOCKER_IMAGE:$GIT_COMMIT" "$DOCKER_IMAGE"
+                docker build -f Dockerfile . --build-arg SSH_KEY=$SSH_KEY --build-arg NPMRC=$NPMRC -t $DOCKER_IMAGE:$GIT_COMMIT
+                docker tag $DOCKER_IMAGE:$GIT_COMMIT $DOCKER_IMAGE
                 docker version
                 ls -AlF
               """
@@ -73,29 +75,21 @@ spec:
         }
       }
     }
-    stage('publish') {
+    stage('Publish') {
       steps {
         container('docker') { 
+          sh("echo hello world")
           script {
             docker.withRegistry('', DOCKERHUB_ID) {
               sh """
-                echo docker push "$DOCKER_IMAGE:$GIT_COMMIT"
-                echo docker push "$DOCKER_IMAGE"
+                docker push $DOCKER_IMAGE:$GIT_COMMIT
+                docker push $DOCKER_IMAGE
               """
             }
           }
           //docker.withRegistry( '', registryCredential ) {
           //  dockerImage.push()
           //}
-          sh("echo hello world")
-        }
-      }
-    }
-    stage('deploy') {
-      steps {
-        container('docker') { 
-          sh("echo Deploy")
-          sh("echo goodbye world")
         }
       }
     }
