@@ -12,41 +12,76 @@ labels:
 spec:
   serviceAccountName: jenkins
   containers:
-  - name: cowsaid 
-    image: rcompos/cowsaid:latest
+  - name: docker
+    image: docker:latest
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+    - mountPath: /var/run/docker.sock
+      name: docker-sock
+  - name: alpine 
+    image: alpine:latest
+    command:
+    - cat
+    tty: true
+  volumes:
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
 """
     }
   }
-  //environment {
-  //  credentialsId = 'dockerhub-creds'
-  //}
+  environment {
+    credentialsId = 'dockerhub-creds'
+  }
   stages {
-<<<<<<< HEAD
-    stage( 'Pre' ) {
-=======
-    stage('Pre Pre') {
->>>>>>> 9c306218965e1530e42d79efc44fcd456561a031
+    stage( 'pre' ) {
       steps {
-        container('cowsaid') {
+        container('alpine') {
           sh """
-            echo hello
+            apk update & apk add git
           """
+          script {
+            env.GIT_REF=sh(returnStdout: true, script: "git rev-parse HEAD").trim()
+          }
         }
       }
     }
-    stage('Build') {
+    stage('build') {
       steps {
         container('docker') {
           sh """
             echo "env.GIT_REF: ${env.GIT_REF}"
             echo "GIT_COMMIT: ${GIT_COMMIT}"
           """
+          //script {
+          //  dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          //}
+          //script {
+          //  docker.withRegistry('', credentialsId) {
+          //    sh """
+          //      echo docker build -f Dockerfile . --build-arg SSH_KEY="$SSH_KEY" --build-arg NPMRC='$NPMRC' -t hellobloom/bloom-vault:${env.GIT_REF}
+          //      echo docker tag hellobloom/bloom-vault:${env.GIT_REF} hellobloom/bloom-vault
+          //    """
+          //}
         }
       }
     }
-    stage('Publish') {
+    stage('publish') {
       steps {
         container('docker') { 
+          //script {
+          //  docker.withRegistry('', credentialsId) {
+          //    sh """
+          //      echo docker push hellobloom/bloom-vault:${env.GIT_REF}
+          //      echo docker push hellobloom/bloom-vault
+          //    """
+          //  }
+          //}
+          //docker.withRegistry( '', registryCredential ) {
+          //  dockerImage.push()
+          //}
           sh("echo hello world")
         }
       }
@@ -61,3 +96,10 @@ spec:
     }
   }
 }
+  //post {
+  //  unsuccessful {
+  //    container('docker') { 
+  //      sh("echo Unsuccessful")
+  //    }
+  //  }
+  //}
