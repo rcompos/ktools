@@ -63,7 +63,8 @@ spec:
               sh """
                 echo docker build -f Dockerfile . --build-arg SSH_KEY="$SSH_KEY" --build-arg NPMRC='$NPMRC' -t hellobloom/bloom-vault:${env.GIT_COMMIT}
                 echo docker tag hellobloom/bloom-vault:${env.GIT_COMMIT} hellobloom/bloom-vault
-                docker pull hellobloom/bloom-vault:${env.GIT_COMMIT}  
+                # Testing connection
+                docker pull hellobloom/bloom-vault:d79ee558c48a8cd2886413f160444907115c3267
                 ls -AlF
               """
             }
