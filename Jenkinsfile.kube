@@ -35,6 +35,7 @@ spec:
   environment {
     credentialsId = 'dockerhub-creds'
     SSH_KEY="asdfa"
+    NPMRC="asdfasdf"
   }
   stages {
     stage( 'pre' ) {
