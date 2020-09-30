@@ -36,15 +36,17 @@ spec:
     credentialsId = 'dockerhub-creds'
   }
   stages {
-    stage( 'pre' ) {
+    stage('Pre') {
       steps {
         container('alpine') {
           sh """
-            apk update & apk add git
+            apk update & apk add git tree
+            printenv
+            la -AlF ..
+            tree -FL 6
+            echo "git rev-parse HEAD"
+            git rev-parse HEAD
           """
-          script {
-            env.GIT_REF=sh(returnStdout: true, script: "git rev-parse HEAD").trim()
-          }
         }
       }
     }
