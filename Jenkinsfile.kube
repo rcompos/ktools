@@ -14,29 +14,29 @@ spec:
   containers:
   - name: cowsaid 
     image: rcompos/cowsaid:latest
-  - name: docker
-    image: docker:latest
-    command:
-    - cat
-    tty: true
-    volumeMounts:
-    - mountPath: /var/run/docker.sock
-      name: docker-sock
-  - name: alpine
-    image: alpine:latest
-    command:
-    - cat
-    tty: true
-  volumes:
-    - name: docker-sock
-      hostPath:
-        path: /var/run/docker.sock
+//  - name: docker
+//    image: docker:latest
+//    command:
+//    - cat
+//    tty: true
+//    volumeMounts:
+//    - mountPath: /var/run/docker.sock
+//      name: docker-sock
+//  - name: alpine
+//    image: alpine:latest
+//    command:
+//    - cat
+//    tty: true
+//  volumes:
+//    - name: docker-sock
+//      hostPath:
+//        path: /var/run/docker.sock
 """
     }
   }
-  environment {
-    credentialsId = 'dockerhub-creds'
-  }
+  //environment {
+  //  credentialsId = 'dockerhub-creds'
+  //}
   stages {
     stage('Pre Pre') {
       steps {
