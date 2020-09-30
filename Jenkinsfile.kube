@@ -34,8 +34,9 @@ spec:
   }
   environment {
     credentialsId = 'dockerhub-creds'
-    SSH_KEY="asdfa"
-    NPMRC="asdfasdf"
+    SSH_KEY = credentials('bloom-vault-ssh-key')
+    NPMRC   = credentials('bloom-vault-npmrc)
+    dockerImage = "hellobloom/bloom-vault"
   }
   stages {
     stage( 'pre' ) {
@@ -61,10 +62,11 @@ spec:
           script {
             docker.withRegistry('', credentialsId) {
               sh """
-                echo docker build -f Dockerfile . --build-arg SSH_KEY="$SSH_KEY" --build-arg NPMRC='$NPMRC' -t hellobloom/bloom-vault:${env.GIT_COMMIT}
+                echo docker build -f Dockerfile . --build-arg SSH_KEY="$SSH_KEY" --build-arg NPMRC="$NPMRC" -t hellobloom/bloom-vault:${GIT_COMMIT}
                 echo docker tag hellobloom/bloom-vault:${env.GIT_COMMIT} hellobloom/bloom-vault
                 # Testing connection
-                docker pull hellobloom/bloom-vault:d79ee558c48a8cd2886413f160444907115c3267
+                #docker pull hellobloom/bloom-vault:d79ee558c48a8cd2886413f160444907115c3267
+                docker version
                 ls -AlF
               """
             }
