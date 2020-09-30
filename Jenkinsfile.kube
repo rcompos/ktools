@@ -32,19 +32,17 @@ spec:
 """
     }
   }
-  environment {
-    credentialsId = 'dockerhub-creds'
-  }
+  //environment {
+  //  credentialsId = 'dockerhub-creds'
+  //}
   stages {
     stage( 'pre' ) {
       steps {
         container('alpine') {
           sh """
+            echo "Installing dependencies"
             apk update & apk add git
           """
-          script {
-            env.GIT_REF=sh(returnStdout: true, script: "git rev-parse HEAD").trim()
-          }
         }
       }
     }
@@ -52,7 +50,8 @@ spec:
       steps {
         container('docker') {
           sh """
-            echo "env.GIT_REF: ${env.GIT_REF}"
+            printf "env.GIT_REF: "
+            git rev-parse HEAD
             echo "GIT_COMMIT: ${GIT_COMMIT}"
           """
           //script {
