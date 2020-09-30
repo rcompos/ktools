@@ -36,7 +36,7 @@ spec:
     credentialsId = 'dockerhub-creds'
   }
   stages {
-    stage( 'pre' ) {
+    stage( 'Pre' ) {
       steps {
         container('alpine') {
           sh """
@@ -48,7 +48,7 @@ spec:
         }
       }
     }
-    stage('build') {
+    stage('Build') {
       steps {
         container('docker') {
           sh """
@@ -68,7 +68,7 @@ spec:
         }
       }
     }
-    stage('publish') {
+    stage('Publish') {
       steps {
         container('docker') { 
           //script {
